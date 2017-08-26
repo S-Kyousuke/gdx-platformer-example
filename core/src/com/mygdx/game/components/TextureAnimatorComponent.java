@@ -17,13 +17,16 @@
 package com.mygdx.game.components;
 
 import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.ObjectMap;
 
-public class SpriteComponent implements Component {
+public class TextureAnimatorComponent implements Component {
 
-    public TextureRegion region;
-    public boolean flipX;
-    public boolean flipY;
-    public int layer;
+    public ObjectMap<Enum, Animation<TextureRegion>> animations;
 
+    public Enum currentAnimation;
+
+    public float animationTime;
+    public boolean freeze;
 }

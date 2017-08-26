@@ -16,45 +16,14 @@
 
 package com.mygdx.game.utils;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.game.components.AnimatorComponent;
-
-import java.util.Comparator;
+import com.mygdx.game.components.TextureAnimatorComponent;
 
 public class AnimatorUtils {
 
     private AnimatorUtils() {
     }
 
-    private static TextureAtlas atlas;
-
-    public static void setAtlas(TextureAtlas atlas) {
-        AnimatorUtils.atlas = atlas;
-    }
-
-    public static void addLoopTo(AnimatorComponent animator, Enum animationName, float frameTime, String regionsName) {
-        addTo(animator, animationName, frameTime, Animation.PlayMode.LOOP, regionsName);
-    }
-
-    public static void addNormalTo(AnimatorComponent animator, Enum animationName, float frameTime, String regionsName) {
-        addTo(animator, animationName, frameTime, Animation.PlayMode.NORMAL, regionsName);
-    }
-
-    public static void addTo(AnimatorComponent animator, Enum animationName, float frameTime, Animation.PlayMode mode, String regionsName) {
-        animator.animations.put(animationName, new Animation<TextureRegion>(frameTime, atlas.findRegions(regionsName), mode));
-    }
-
-    public static boolean isFinished(AnimatorComponent animator, Enum animationName) {
+    public static boolean isFinished(TextureAnimatorComponent animator, Enum animationName) {
         return animator.animations.get(animationName).isAnimationFinished(animator.animationTime);
-    }
-
-    private static class RegionNameComparator implements Comparator<TextureAtlas.AtlasRegion> {
-
-        @Override
-        public int compare(TextureAtlas.AtlasRegion region1, TextureAtlas.AtlasRegion region2) {
-            return region1.name.compareTo(region2.name);
-        }
     }
 }

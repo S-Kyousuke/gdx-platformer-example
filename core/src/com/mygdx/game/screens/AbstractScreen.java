@@ -14,19 +14,44 @@
  *    limitations under the License.
  */
 
-package com.mygdx.game.components;
+package com.mygdx.game.screens;
 
-import com.badlogic.ashley.core.Component;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 
-public class AnimatorComponent implements Component {
+public abstract class AbstractScreen implements Screen {
 
-    public ObjectMap<Enum, Animation<TextureRegion>> animations = new ObjectMap<Enum, Animation<TextureRegion>>();
+    protected final Game game;
 
-    public Enum currentAnimation;
+    public AbstractScreen(Game game) {
+        this.game = game;
+    }
 
-    public float animationTime;
-    public boolean freeze;
+    @Override
+    public void show() {
+    }
+
+    @Override
+    public void render(float delta) {
+    }
+
+    @Override
+    public void resize(int width, int height) {
+    }
+
+    @Override
+    public void pause() {
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public final void dispose() {
+    }
 }

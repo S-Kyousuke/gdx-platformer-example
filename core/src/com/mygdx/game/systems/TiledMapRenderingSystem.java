@@ -33,11 +33,6 @@ public class TiledMapRenderingSystem extends IteratingSystem {
     }
 
     @Override
-    public void update(float deltaTime) {
-        super.update(deltaTime);
-    }
-
-    @Override
     protected void processEntity(Entity entity, float deltaTime) {
         TiledMapComponent tiledMap = Mappers.tiledMap.get(entity);
         tiledMap.renderer.setView(camera);

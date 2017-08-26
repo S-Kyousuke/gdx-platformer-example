@@ -23,8 +23,8 @@ public class Mappers {
 
     public static final ComponentMapper<TransformComponent> transform = ComponentMapper.getFor(TransformComponent.class);
     public static final ComponentMapper<PhysicsComponent> physics = ComponentMapper.getFor(PhysicsComponent.class);
-    public static final ComponentMapper<SpriteComponent> sprite = ComponentMapper.getFor(SpriteComponent.class);
-    public static final ComponentMapper<AnimatorComponent> animator = ComponentMapper.getFor(AnimatorComponent.class);
+    public static final ComponentMapper<TextureComponent> sprite = ComponentMapper.getFor(TextureComponent.class);
+    public static final ComponentMapper<TextureAnimatorComponent> animator = ComponentMapper.getFor(TextureAnimatorComponent.class);
     public static final ComponentMapper<CameraHelperComponent> cameraHelper = ComponentMapper.getFor(CameraHelperComponent.class);
     public static final ComponentMapper<TiledMapComponent> tiledMap = ComponentMapper.getFor(TiledMapComponent.class);
     public static final ComponentMapper<CharacterComponent> character = ComponentMapper.getFor(CharacterComponent.class);

@@ -1,57 +1,119 @@
-/*
- *    Copyright 2017 Surasek Nusati <surasek@gmail.com>
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
 package com.mygdx.game.screens;
 
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.components.PhysicsComponent;
+import com.mygdx.game.components.TiledMapComponent;
+import com.mygdx.game.listeners.BodyRemovalListener;
+import com.mygdx.game.listeners.TiledMapCleanupListener;
+import com.mygdx.game.listeners.WorldContactListener;
+import com.mygdx.game.systems.*;
+import com.mygdx.game.utils.Box2dUtils;
+import com.mygdx.game.utils.EntityBuilder;
 
-public abstract class AbstractGameScreen implements Screen {
+public class AbstractGameScreen extends AbstractScreen {
 
-    protected final Game game;
+    private SpriteBatch batch;
 
-    public AbstractGameScreen(Game game) {
-        this.game = game;
+    private OrthographicCamera camera;
+    private Viewport viewport;
+
+    private World world;
+    private Box2DDebugRenderer debugRenderer;
+
+    private PooledEngine engine;
+
+    private BodyRemovalListener bodyRemovalListener;
+    private TiledMapCleanupListener tiledMapCleanupListener;
+
+    public AbstractGameScreen(Game game, float sceneWidth, float sceneHeight) {
+        super(game);
+        initGameScene(sceneWidth, sceneHeight);
     }
 
-    @Override
-    public void show() {
+    private void initGameScene(float sceneWidth, float sceneHeight) {
+        batch = new SpriteBatch();
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(sceneWidth, sceneHeight, camera);
+
+        world = new World(new Vector2(0, -9.8f), true);
+        world.setContactListener(new WorldContactListener());
+        debugRenderer = new Box2DDebugRenderer();
+
+        Box2dUtils.init();
+        intiEntityEngine();
+        EntityBuilder.setEngine(engine);
+    }
+
+    private void intiEntityEngine() {
+        engine = new PooledEngine();
+
+        engine.addSystem(new RenderingSystem(batch, camera));
+        engine.addSystem(new PhysicsSystem(world));
+        engine.addSystem(new PhysicsDebugSystem(world, debugRenderer, camera));
+        engine.addSystem(new CameraHelperSystem());
+        engine.addSystem(new TiledMapRenderingSystem(camera));
+        engine.addSystem(new TextureAnimatorSystem());
+        engine.addSystem(new CharacterSystem());
+        engine.addSystem(new PlayerSystem());
+        engine.addSystem(new AiSystem());
+
+        bodyRemovalListener = new BodyRemovalListener(world);
+        tiledMapCleanupListener = new TiledMapCleanupListener();
+
+        engine.addEntityListener(Family.all(PhysicsComponent.class).get(), bodyRemovalListener);
+        engine.addEntityListener(Family.all(TiledMapComponent.class).get(), tiledMapCleanupListener);
     }
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        engine.update(delta);
     }
 
     @Override
     public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
+        viewport.update(width, height);
     }
 
     @Override
     public void hide() {
+        engine.removeAllEntities();
+        engine.removeEntityListener(bodyRemovalListener);
+        engine.removeEntityListener(tiledMapCleanupListener);
+
+        batch.dispose();
+        world.dispose();
+        debugRenderer.dispose();
+
+        Box2dUtils.dispose();
     }
 
-    @Override
-    public final void dispose() {
+    public World getWorld() {
+        return world;
+    }
+
+    public SpriteBatch getBatch() {
+        return batch;
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
+    }
+
+    public PooledEngine getEngine() {
+        return engine;
     }
 }

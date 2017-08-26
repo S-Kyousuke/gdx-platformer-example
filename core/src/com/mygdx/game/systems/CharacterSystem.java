@@ -20,14 +20,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.mygdx.game.components.CharacterComponent;
-import com.mygdx.game.components.SpriteComponent;
+import com.mygdx.game.components.TextureComponent;
 import com.mygdx.game.utils.Direction;
 import com.mygdx.game.utils.Mappers;
 
 public class CharacterSystem extends IteratingSystem {
 
     public CharacterSystem() {
-        super(Family.all(CharacterComponent.class, SpriteComponent.class).get());
+        super(Family.all(CharacterComponent.class, TextureComponent.class).get());
     }
 
     @Override

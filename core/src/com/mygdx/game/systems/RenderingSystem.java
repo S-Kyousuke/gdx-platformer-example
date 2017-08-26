@@ -22,7 +22,7 @@ import com.badlogic.ashley.systems.SortedIteratingSystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.components.SpriteComponent;
+import com.mygdx.game.components.TextureComponent;
 import com.mygdx.game.components.TransformComponent;
 import com.mygdx.game.utils.Mappers;
 
@@ -39,7 +39,7 @@ public class RenderingSystem extends SortedIteratingSystem {
     private Array<Entity> renderQueue = new Array<Entity>();
 
     public RenderingSystem(SpriteBatch batch, Camera camera) {
-        super(Family.all(SpriteComponent.class, TransformComponent.class).get(), new LayerComparator(), 3);
+        super(Family.all(TextureComponent.class, TransformComponent.class).get(), new LayerComparator(), 3);
 
         this.batch = batch;
         this.camera = camera;
@@ -55,7 +55,7 @@ public class RenderingSystem extends SortedIteratingSystem {
             Entity entity = renderQueue.get(i);
 
             TransformComponent transform = Mappers.transform.get(entity);
-            SpriteComponent sprite = Mappers.sprite.get(entity);
+            TextureComponent sprite = Mappers.sprite.get(entity);
 
             final float width = sprite.region.getRegionWidth();
             final float height = sprite.region.getRegionHeight();

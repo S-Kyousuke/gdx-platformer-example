@@ -19,21 +19,21 @@ package com.mygdx.game.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.mygdx.game.components.AnimatorComponent;
-import com.mygdx.game.components.SpriteComponent;
+import com.mygdx.game.components.TextureAnimatorComponent;
+import com.mygdx.game.components.TextureComponent;
 import com.mygdx.game.components.TransformComponent;
 import com.mygdx.game.utils.Mappers;
 
-public class AnimatorSystem extends IteratingSystem {
+public class TextureAnimatorSystem extends IteratingSystem {
 
-    public AnimatorSystem() {
-        super(Family.all(AnimatorComponent.class, TransformComponent.class, SpriteComponent.class).get());
+    public TextureAnimatorSystem() {
+        super(Family.all(TextureAnimatorComponent.class, TransformComponent.class, TextureComponent.class).get());
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        SpriteComponent sprite = Mappers.sprite.get(entity);
-        AnimatorComponent animator = Mappers.animator.get(entity);
+        TextureComponent sprite = Mappers.sprite.get(entity);
+        TextureAnimatorComponent animator = Mappers.animator.get(entity);
 
         if (!animator.freeze) animator.animationTime += deltaTime;
 

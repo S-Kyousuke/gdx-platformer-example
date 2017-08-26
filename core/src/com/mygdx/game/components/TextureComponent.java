@@ -14,24 +14,16 @@
  *    limitations under the License.
  */
 
-package com.mygdx.game.utils;
+package com.mygdx.game.components;
 
-import com.mygdx.game.systems.RenderingSystem;
+import com.badlogic.ashley.core.Component;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class DimensionUtils {
+public class TextureComponent implements Component {
 
-    private DimensionUtils() {
-    }
+    public TextureRegion region;
+    public boolean flipX;
+    public boolean flipY;
+    public int layer;
 
-    public static float pixelToWorld(float pixel) {
-        return pixel / RenderingSystem.PIXEL_PER_UNIT;
-    }
-
-    public static float worldToPixel(float world) {
-        return world * RenderingSystem.PIXEL_PER_UNIT;
-    }
-
-    public static float getScale(float pixel, float desiredWorld) {
-        return worldToPixel(desiredWorld) / pixel;
-    }
 }

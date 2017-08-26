@@ -43,8 +43,8 @@ public class PlayerSystem extends IteratingSystem {
     public PlayerSystem() {
         super(Family.all(PhysicsComponent.class,
                 CharacterComponent.class,
-                AnimatorComponent.class,
-                SpriteComponent.class,
+                TextureAnimatorComponent.class,
+                TextureComponent.class,
                 PlayerComponent.class).get());
     }
 
@@ -57,7 +57,7 @@ public class PlayerSystem extends IteratingSystem {
         IDLE() {
             @Override
             public void enter(Entity entity) {
-                final AnimatorComponent animator = Mappers.animator.get(entity);
+                final TextureAnimatorComponent animator = Mappers.animator.get(entity);
                 animator.currentAnimation = PlayerAnimation.IDLE;
                 animator.animationTime = 0;
             }
@@ -84,7 +84,7 @@ public class PlayerSystem extends IteratingSystem {
         WALKING() {
             @Override
             public void enter(Entity entity) {
-                final AnimatorComponent animator = Mappers.animator.get(entity);
+                final TextureAnimatorComponent animator = Mappers.animator.get(entity);
 
                 animator.currentAnimation = PlayerAnimation.WALKING;
                 animator.animationTime = 0;
@@ -111,7 +111,7 @@ public class PlayerSystem extends IteratingSystem {
         JUMPING() {
             @Override
             public void enter(Entity entity) {
-                final AnimatorComponent animator = Mappers.animator.get(entity);
+                final TextureAnimatorComponent animator = Mappers.animator.get(entity);
 
                 animator.currentAnimation = PlayerAnimation.JUMPING;
                 animator.animationTime = 0;

@@ -64,18 +64,17 @@ public class EntityBuilder {
         final float playerHeight = 0.67f;
         final float frameDuration = 1.0f / 8;
 
-        SpriteComponent sprite = new SpriteComponent();
+        TextureComponent sprite = new TextureComponent();
 
         TransformComponent transform = new TransformComponent();
         transform.scale.set(playerScale, playerScale);
         transform.position.set(x, y);
 
-        AnimatorComponent animator = new AnimatorComponent();
-
-        AnimatorUtils.setAtlas(Assets.instance.playerAtlas);
-        AnimatorUtils.addLoopTo(animator, PlayerAnimation.IDLE, frameDuration, "player_idle");
-        AnimatorUtils.addLoopTo(animator, PlayerAnimation.WALKING, frameDuration, "player_walk");
-        AnimatorUtils.addLoopTo(animator, PlayerAnimation.JUMPING, frameDuration, "player_jump");
+        TextureAnimatorBuilder animatorBuilder = new TextureAnimatorBuilder(Assets.instance.playerAtlas);
+        animatorBuilder.addLoopAnimation(PlayerAnimation.IDLE, "player_idle", frameDuration);
+        animatorBuilder.addLoopAnimation(PlayerAnimation.WALKING, "player_walk", frameDuration);
+        animatorBuilder.addLoopAnimation(PlayerAnimation.JUMPING, "player_jump", frameDuration);
+        TextureAnimatorComponent animator = animatorBuilder.getAnimator();
 
         animator.currentAnimation = PlayerAnimation.IDLE;
 
